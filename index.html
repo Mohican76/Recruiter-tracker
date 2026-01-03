@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c3e50">
+    <title>Recruiter Tracker</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiUmVjcnVpdGVyIFRyYWNrZXIiLCJzaG9ydF9uYW1lIjoiUmVjcnVpdGVyIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmZmZmZmYiLCJ0aGVtZV9jb2xvciI6IiMyYzNlNTAiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTWpBd0lpQm9aV2xuYUhROUlqSXdNQ0lnZUcxc2JuTTlJbWgwZEhBNkx5OTNkM2N1ZHpNdWIzSm5Mekl3TURBdmMzWm5JajQ4Y21WamRDQjNhV1IwYUQwaU1qQXdJaUJvWldsbmFIUTlJakl3TUNJZ1ptbHNiRDBpSXpKak0yVTFNQ0l2UGp3dmMzWm5QZz09Iiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn1dfQ==">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .add-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .add-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .table-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-x: auto;
+        }
+
+        .table-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+        }
+
+        th {
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-applied {
+            background: #3498db;
+            color: white;
+        }
+
+        .status-interview {
+            background: #f39c12;
+            color: white;
+        }
+
+        .status-offer {
+            background: #27ae60;
+            color: white;
+        }
+
+        .status-rejected {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .status-pending {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #95a5a6;
+        }
+
+        .empty-state p {
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Recruiter Tracker</h1>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-label">Total Applications</div>
+                    <div class="stat-value" id="totalApps">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Interviews</div>
+                    <div class="stat-value" id="interviewCount">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Offers</div>
+                    <div class="stat-value" id="offerCount">0</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="add-section">
+            <h2>Add New Application</h2>
+            <form id="applicationForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="company">Company Name *</label>
+                        <input type="text" id="company" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Position *</label>
+                        <input type="text" id="position" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recruiter">Recruiter Name</label>
+                        <input type="text" id="recruiter">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Info</label>
+                        <input type="text" id="contact" placeholder="Email or Phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="dateApplied">Date Applied *</label>
+                        <input type="date" id="dateApplied" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status *</label>
+                        <select id="status" required>
+                            <option value="Applied">Applied</option>
+                            <option value="Interview">Interview Scheduled</option>
+                            <option value="Offer">Offer Received</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Pending">Pending Response</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" placeholder="Additional details, follow-up dates, etc."></textarea>
+                </div>
+                <button type="submit" class="btn-add">+ Add Application</button>
+            </form>
+        </div>
+
+        <div class="table-section">
+            <h2>Applications</h2>
+            <div class="controls">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="Applied">Applied</button>
+                <button class="filter-btn" data-filter="Interview">Interview</button>
+                <button class="filter-btn" data-filter="Offer">Offer</button>
+                <button class="filter-btn" data-filter="Rejected">Rejected</button>
+                <button class="filter-btn" data-filter="Pending">Pending</button>
+            </div>
+            <div id="tableContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let applications = [];
+        let currentFilter = 'all';
+        let editingId = null;
+
+        // Load applications from localStorage
+        function loadApplications() {
+            const saved = localStorage.getItem('recruiterApplications');
+            if (saved) {
+                applications = JSON.parse(saved);
+                renderTable();
+                updateStats();
+            }
+        }
+
+        // Save applications to localStorage
+        function saveApplications() {
+            localStorage.setItem('recruiterApplications', JSON.stringify(applications));
+        }
+
+        // Set today's date as default
+        document.getElementById('dateApplied').valueAsDate = new Date();
+
+        // Handle form submission
+        document.getElementById('applicationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const application = {
+                id: editingId || Date.now(),
+                company: document.getElementById('company').value.trim(),
+                position: document.getElementById('position').value.trim(),
+                recruiter: document.getElementById('recruiter').value.trim(),
+                contact: document.getElementById('contact').value.trim(),
+                dateApplied: document.getElementById('dateApplied').value,
+                status: document.getElementById('status').value,
+                notes: document.getElementById('notes').value.trim()
+            };
+
+            if (editingId) {
+                const index = applications.findIndex(app => app.id === editingId);
+                applications[index] = application;
+                editingId = null;
+                document.querySelector('.btn-add').textContent = '+ Add Application';
+            } else {
+                applications.unshift(application);
+            }
+
+            saveApplications();
+            renderTable();
+            updateStats();
+
+            // Reset form
+            document.getElementById('applicationForm').reset();
+            document.getElementById('dateApplied').valueAsDate = new Date();
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderTable();
+            });
+        });
+
+        function editApplication(id) {
+            const app = applications.find(a => a.id === id);
+            if (!app) return;
+
+            editingId = id;
+            document.getElementById('company').value = app.company;
+            document.getElementById('position').value = app.position;
+            document.getElementById('recruiter').value = app.recruiter;
+            document.getElementById('contact').value = app.contact;
+            document.getElementById('dateApplied').value = app.dateApplied;
+            document.getElementById('status').value = app.status;
+            document.getElementById('notes').value = app.notes;
+
+            document.querySelector('.btn-add').textContent = 'Update Application';
+            document.querySelector('.add-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteApplication(id) {
+            if (confirm('Delete this application?')) {
+                applications = applications.filter(app => app.id !== id);
+                saveApplications();
+                renderTable();
+                updateStats();
+            }
+        }
+
+        function renderTable() {
+            const container = document.getElementById('tableContainer');
+            
+            let filtered = applications;
+            if (currentFilter !== 'all') {
+                filtered = applications.filter(app => app.status === currentFilter);
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>📊 No applications found. Add your first application above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Position</th>
+                            <th>Recruiter</th>
+                            <th>Contact</th>
+                            <th>Date Applied</th>
+                            <th>Status</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filtered.map(app => `
+                            <tr>
+                                <td><strong>${app.company}</strong></td>
+                                <td>${app.position}</td>
+                                <td>${app.recruiter || '-'}</td>
+                                <td>${app.contact || '-'}</td>
+                                <td>${formatDate(app.dateApplied)}</td>
+                                <td><span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span></td>
+                                <td>${app.notes ? app.notes.substring(0, 30) + (app.notes.length > 30 ? '...' : '') : '-'}</td>
+                                <td>
+                                    <div class="actions">
+                                        <button class="btn-edit" onclick="editApplication(${app.id})">Edit</button>
+                                        <button class="btn-delete" onclick="deleteApplication(${app.id})">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function updateStats() {
+            const total = applications.length;
+            const interviews = applications.filter(app => app.status === 'Interview').length;
+            const offers = applications.filter(app => app.status === 'Offer').length;
+
+            document.getElementById('totalApps').textContent = total;
+            document.getElementById('interviewCount').textContent = interviews;
+            document.getElementById('offerCount').textContent = offers;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString + 'T00:00:00');
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // Load applications on page load
+        loadApplications();
+
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoc2VsZi5za2lwV2FpdGluZygpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZnVuY3Rpb24oZXZlbnQpIHsKICBldmVudC53YWl0VW50aWwoc2VsZi5jbGllbnRzLmNsYWltKCkpOwp9KTs=');
+        }
+    </script>
+</body>
+</html>
