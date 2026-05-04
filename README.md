@@ -1,34 +1,29 @@
-# Recruiter Tracker App
+# 📋 Recruiter Tracker — Cyberpunk Edition
 
-A professional application tracking system to manage job applications, recruiter contacts, and interview schedules. Stay organized in your job search.
+A professional job application management system built with HTML, CSS, and JavaScript.
 
-## 🌐 Live Demo
-
-**[View Live App](https://recruiter-tracker.netlify.app)**
+## 🚀 Live Demo
+[View Live App](https://recruiter-tracker.netlify.app)
 
 ## ✨ Features
-
-- Track job applications
-- Manage recruiter contacts
-- Schedule interviews
-- Application status tracking
-- Notes and follow-up reminders
-- Clean, professional interface
-- Mobile-responsive design
+- Track job applications and their status
+- Add recruiter contact information
+- Notes section for each application
+- Status tracking (Applied, Interview, Offer, Rejected)
+- Local storage — data saves automatically
+- Cyberpunk neon design with glitch effects
 
 ## 🛠️ Technologies Used
-
 - HTML5
-- CSS3
+- CSS3 (Custom Cyberpunk theme)
 - JavaScript (Vanilla)
-- Local Storage
-- Netlify (deployment)
+- Local Storage API
 
-## 👨‍💻 Author
+## 📱 How To Use
+1. Add a new job application using the form
+2. Track status as it progresses
+3. Add notes and recruiter contact details
+4. Data saves automatically to your browser
 
-**Gerald Mendoza**
-- GitHub: [@Mohican76](https://github.com/Mohican76)
-- Email: gmendoza582365@aol.com
-
-## 📝 License
-
+## 👨‍💻 Developer
+Gerald — [GitHub Profile](https://github.com/Mohican76)
